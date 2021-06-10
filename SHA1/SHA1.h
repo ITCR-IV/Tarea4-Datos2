@@ -14,7 +14,7 @@ public:
     void printResultHex();
 
 private:
-    unsigned char result[160];
+    unsigned char result[20];
     unsigned char *ogPhrase;
     size_t length;
     List<List<unsigned char>> blocks512;

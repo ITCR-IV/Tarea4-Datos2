@@ -5,9 +5,9 @@
 int main()
 {
     unsigned char zero = 0;
-    unsigned char *phrase = &zero;
+    const unsigned char *phrase = reinterpret_cast<const unsigned char *>("abc");
     // std::cout << strlen(phrase) << std::endl;
-    SHA1(phrase, 1).printResultHex();
+    SHA1(phrase, 3).printResultHex();
 
     // std::string word;
     // std::cout << "Ingrese la palabra por encriptar (MD5): ";
