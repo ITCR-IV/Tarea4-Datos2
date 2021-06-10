@@ -4,15 +4,17 @@
 
 int main()
 {
-    char phrase[] = "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq";
-    const unsigned char *uphrase = reinterpret_cast<const unsigned char *>(phrase);
+    ////// SHA-1 demo:
+    // char phrase[] = "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq";
+    // const unsigned char *uphrase = reinterpret_cast<const unsigned char *>(phrase);
     // std::cout << strlen(phrase) << std::endl;
-    SHA1(uphrase, strlen(phrase)).printResultHex();
+    // SHA1(uphrase, strlen(phrase)).printResultHex();
 
+    ////// MD5 demo:
     // std::string word;
     // std::cout << "Ingrese la palabra por encriptar (MD5): ";
-    // std::cin>> word;
-    // std::cout << word << ": "<< md5(word) << std::endl;
+    // std::cin >> word;
+    // std::cout << word << ": " << md5(word) << std::endl;
 
     return 0;
 }

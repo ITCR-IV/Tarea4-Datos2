@@ -10,7 +10,6 @@ class SHA1
 {
 public:
     SHA1(const unsigned char phrase[], size_t phraseLength);
-    char *getResult();
     void printResultHex();
 
 private:
