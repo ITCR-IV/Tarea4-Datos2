@@ -16,31 +16,15 @@ SHA1::SHA1(const char phrase[], size_t phraseLength)
 
 void SHA1::divAndPad()
 {
-    List<List<unsigned char>> incompleteBlocks448;
+    List<unsigned char> phraseList = arrToList(this->ogPhrase, this->length);
+    phraseList += (unsigned char)0x80;
 
-    // since we're dealing with bytes: 56 = 448/8
-    for (int i = 0; i < (int)(this->length / 56); i++)
+    while (phraseList.length() % 64 != 56)
     {
-        unsigned char block[56];
-        memcpy(block, ogPhrase + i * 56, 56);
-        incompleteBlocks448.push_back(arrToList(block, 56));
-    }
-    //after for is done the last incomplete block remains
-    int remainingBytesAmount = this->length % 56;
-    if (remainingBytesAmount > 0)
-    {
-        unsigned char lastBlock[56];
-        memcpy(lastBlock, ogPhrase + this->length - remainingBytesAmount, remainingBytesAmount); // add the remaining bytes to lastBlock (excluding \0)
-
-        *(lastBlock + remainingBytesAmount) = 0b10000000; // Add the first 1 and 7 0s
-        for (size_t i = 1; i < 56 - remainingBytesAmount; i++)
-        {
-            *(lastBlock + remainingBytesAmount + i) = 0; // Add the remaining 0s
-        }
-
-        incompleteBlocks448.push_back(arrToList(lastBlock, 56));
+        phraseList += (unsigned char)0x00;
     }
 
+    // then we add the file size descriptor last 64 bits
     unsigned char fileSize[8]; // 8 because 64/8 = 8 (and we're working with whole bytes)
     memset(fileSize, 0, 8);
 
@@ -55,12 +39,9 @@ void SHA1::divAndPad()
     List<unsigned char> sizeBytes = arrToList(fileSize, 8);
     std::cout << "size in bytes: " << *reinterpret_cast<List<int> *>(&sizeBytes) << std::endl;
 
-    for (size_t i = 0; i < incompleteBlocks448.length(); i++)
-    {
-        this->blocks512.push_back(incompleteBlocks448[i] + sizeBytes);
-    }
+    phraseList += sizeBytes;
 
-    std::cout << "512 blocks: " << blocks512 << std::endl;
+    std::cout << "Final size: " << phraseList.length() << std::endl;
 }
 
 List<unsigned char> SHA1::arrToList(unsigned char array[], size_t arrSize)
