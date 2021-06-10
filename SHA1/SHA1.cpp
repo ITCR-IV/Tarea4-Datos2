@@ -58,12 +58,68 @@ void SHA1::divAndPad()
 void SHA1::process()
 {
     // initialize digest
-    uint digest[5];
-    digest[0] = 0x67452301;
-    digest[1] = 0xefcdab89;
-    digest[2] = 0x98badcfe;
-    digest[3] = 0x10325476;
-    digest[4] = 0xc3d2e1f0;
+    uint32_t digest[5];
+    uint32_t a = digest[0] = 0x67452301;
+    uint32_t b = digest[1] = 0xefcdab89;
+    uint32_t c = digest[2] = 0x98badcfe;
+    uint32_t d = digest[3] = 0x10325476;
+    uint32_t e = digest[4] = 0xc3d2e1f0;
+
+    for (size_t i = 0; i < this->blocks512.length(); i++)
+    {
+        uint32_t words[80];
+        for (size_t round = 0; round < 80; round++)
+        {
+            if (round < 16)
+            {
+                words[round] = generateWord(blocks512[i], round);
+            }
+            else
+            {
+                words[round] = leftrotate(words[i - 3] ^ words[i - 8] ^ words[i - 14] ^ words[i - 16], 1);
+            }
+            uint32_t f;
+            uint32_t k;
+            if (0 <= round <= 19)
+            {
+                f = (b & c) | ((~b) & d);
+                k = 0x5A827999;
+            }
+            else if (20 <= round <= 39)
+            {
+                f = b ^ c ^ d;
+                k = 0x6ED9EBA1;
+            }
+
+            else if (40 <= round <= 59)
+            {
+                f = (b & c) | (b & d) | (c & d);
+                k = 0x8F1BBCDC;
+            }
+            else if (60 <= round <= 79)
+            {
+                f = b ^ c ^ d;
+                k = 0xCA62C1D6;
+            }
+
+            uint32_t temp = (leftrotate(a, 5)) + f + e + k + words[i];
+            e = d;
+            d = c;
+            c = leftrotate(b, 30);
+            b = a;
+            a = temp;
+        }
+        digest[0] += a;
+        digest[1] += b;
+        digest[2] += c;
+        digest[3] += d;
+        digest[4] += e;
+    }
+
+    for (size_t i = 0; i < 5; i++)
+    {
+        memcpy(result + i * 32, &digest[i], 32);
+    }
 }
 
 List<unsigned char> SHA1::arrToList(unsigned char array[], size_t arrSize)
@@ -84,4 +140,25 @@ unsigned char *ListToArr(List<unsigned char> list)
         arr[i] = list[i];
     }
     return arr;
+}
+
+uint32_t SHA1::generateWord(List<unsigned char> block64byte, int index)
+{
+    List<unsigned char> newList;
+    for (size_t i = 0; i < 4; i++)
+    {
+        newList.push_back(block64byte[i + index * 4]);
+    }
+    uint32_t value = 0;
+
+    value |= newList[0] << 24;
+    value |= newList[1] << 16;
+    value |= newList[2] << 8;
+    value |= newList[3];
+    return value;
+}
+
+uint32_t SHA1::leftrotate(const uint32_t value, const size_t bits)
+{
+    return (value << bits) | (value >> (32 - bits));
 }
