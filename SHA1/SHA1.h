@@ -18,8 +18,10 @@ private:
     List<List<unsigned char>> blocks512;
 
     void divAndPad();
+    void process();
 
     List<unsigned char> arrToList(unsigned char array[], size_t arrSize);
+    unsigned char* ListToArr(List<unsigned char> list);
 };
 
 #endif

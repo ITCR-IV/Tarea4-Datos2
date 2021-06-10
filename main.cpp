@@ -8,10 +8,10 @@ int main()
     std::cout << strlen(phrase) << std::endl;
     SHA1(phrase, strlen(phrase));
 
-    std::string word;
-    std::cout << "Ingrese la palabra por encriptar (MD5): ";
-    std::cin>> word;
-    std::cout << word << ": "<< md5(word) << std::endl;
+    // std::string word;
+    // std::cout << "Ingrese la palabra por encriptar (MD5): ";
+    // std::cin>> word;
+    // std::cout << word << ": "<< md5(word) << std::endl;
 
     return 0;
 }

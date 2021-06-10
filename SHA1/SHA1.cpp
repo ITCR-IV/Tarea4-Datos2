@@ -12,6 +12,7 @@ SHA1::SHA1(const char phrase[], size_t phraseLength)
     memcpy(this->ogPhrase, phrase, phraseLength);
     std::cout << ogPhrase << std::endl;
     divAndPad();
+    process();
 }
 
 void SHA1::divAndPad()
@@ -42,6 +43,27 @@ void SHA1::divAndPad()
     phraseList += sizeBytes;
 
     std::cout << "Final size: " << phraseList.length() << std::endl;
+
+    for (size_t i = 0; i < phraseList.length() / 64; i++)
+    {
+        List<unsigned char> newList;
+        for (size_t j = 0; j < 64; j++)
+        {
+            newList.push_back(phraseList[j + i * 64]);
+        }
+        this->blocks512.push_back(newList);
+    }
+}
+
+void SHA1::process()
+{
+    // initialize digest
+    uint digest[5];
+    digest[0] = 0x67452301;
+    digest[1] = 0xefcdab89;
+    digest[2] = 0x98badcfe;
+    digest[3] = 0x10325476;
+    digest[4] = 0xc3d2e1f0;
 }
 
 List<unsigned char> SHA1::arrToList(unsigned char array[], size_t arrSize)
@@ -52,4 +74,14 @@ List<unsigned char> SHA1::arrToList(unsigned char array[], size_t arrSize)
         newList.push_back(array[i]);
     }
     return newList;
+}
+
+unsigned char *ListToArr(List<unsigned char> list)
+{
+    unsigned char arr[list.length()];
+    for (size_t i = 0; i < list.length(); i++)
+    {
+        arr[i] = list[i];
+    }
+    return arr;
 }
