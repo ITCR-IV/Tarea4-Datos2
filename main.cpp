@@ -3,7 +3,9 @@
 
 int main()
 {
-    SHA1("123456789 10 11 12\n");
+    char *phrase = "khfghkfdghsdfhgfdghfsdkhfghkfdghsdfhgfdghfsdgjksdgsdglsdfhglsdfhgldfhgklsdfhglskhfghkfdghsdfhgfdghfsdgjksdgsdglsdfhglsdfhgldfhgklsdfhglskhfghkfdghsdfhgfdghfsdgjksdgsdglsdfhglsdfhgldfhgklsdfhglskhfghkfdghsdfhgfdghfsdgjksdgsdglsdfhglsdfhgldfhgklsdfhglsgjksdgsdglsdfhglsdfhgldfhgklsdfhgls";
+    std::cout << strlen(phrase) << std::endl;
+    SHA1(phrase, strlen(phrase));
 
     return 0;
 }
