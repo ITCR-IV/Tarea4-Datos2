@@ -4,9 +4,10 @@
 
 int main()
 {
-    char *phrase = "khfghkfdghsdfhgfdghfsdkhfghkfdghsdfhgfdghfsdgjksdgsdglsdfhglsdfhgldfhgklsdfhglskhfghkfdghsdfhgfdghfsdgjksdgsdglsdfhglsdfhgldfhgklsdfhglskhfghkfdghsdfhgfdghfsdgjksdgsdglsdfhglsdfhgldfhgklsdfhglskhfghkfdghsdfhgfdghfsdgjksdgsdglsdfhglsdfhgldfhgklsdfhglsgjksdgsdglsdfhglsdfhgldfhgklsdfhgls";
-    std::cout << strlen(phrase) << std::endl;
-    SHA1(phrase, strlen(phrase));
+    unsigned char zero = 0;
+    unsigned char *phrase = &zero;
+    // std::cout << strlen(phrase) << std::endl;
+    SHA1(phrase, 1).printResultHex();
 
     // std::string word;
     // std::cout << "Ingrese la palabra por encriptar (MD5): ";

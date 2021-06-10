@@ -9,7 +9,7 @@
 class SHA1
 {
 public:
-    SHA1(const char phrase[], size_t phraseLength);
+    SHA1(const unsigned char phrase[], size_t phraseLength);
     char *getResult();
     void printResultHex();
 
@@ -19,10 +19,10 @@ private:
     size_t length;
     List<List<unsigned char>> blocks512;
 
-    void divAndPad();
+    void divAndPad(const unsigned char *phrase);
     void process();
 
-    List<unsigned char> arrToList(unsigned char array[], size_t arrSize);
+    List<unsigned char> arrToList(const unsigned char array[], size_t arrSize);
     unsigned char *ListToArr(List<unsigned char> list);
 
     uint32_t generateWord(List<unsigned char> block512bit, int index);

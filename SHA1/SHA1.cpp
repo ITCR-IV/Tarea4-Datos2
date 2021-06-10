@@ -6,18 +6,17 @@
  * \param phrase must be any array of bytes (chars)
  * \param phraseLength must be the size of the phrase (the exact amount of bytes you wish to be read off of it)
  */
-SHA1::SHA1(const char phrase[], size_t phraseLength)
+SHA1::SHA1(const unsigned char phrase[], size_t phraseLength)
 {
     this->length = phraseLength;
-    memcpy(this->ogPhrase, phrase, phraseLength);
-    std::cout << ogPhrase << std::endl;
-    divAndPad();
+    std::cout << phrase << std::endl;
+    divAndPad(phrase);
     process();
 }
 
-void SHA1::divAndPad()
+void SHA1::divAndPad(const unsigned char *phrase)
 {
-    List<unsigned char> phraseList = arrToList(this->ogPhrase, this->length);
+    List<unsigned char> phraseList = arrToList(phrase, this->length);
     phraseList += (unsigned char)0x80;
 
     while (phraseList.length() % 64 != 56)
@@ -122,7 +121,7 @@ void SHA1::process()
     }
 }
 
-List<unsigned char> SHA1::arrToList(unsigned char array[], size_t arrSize)
+List<unsigned char> SHA1::arrToList(const unsigned char array[], size_t arrSize)
 {
     List<unsigned char> newList;
     for (size_t i = 0; i < arrSize; i++)
@@ -161,4 +160,14 @@ uint32_t SHA1::generateWord(List<unsigned char> block64byte, int index)
 uint32_t SHA1::leftrotate(const uint32_t value, const size_t bits)
 {
     return (value << bits) | (value >> (32 - bits));
+}
+
+void SHA1::printResultHex()
+{
+    std::cout << "hex hash: ";
+    for (size_t i = 0; i < 160; i++)
+    {
+        std::cout << std::hex << (int)(this->result[i]);
+    }
+    std::cout << std::endl;
 }
