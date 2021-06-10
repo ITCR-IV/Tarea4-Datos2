@@ -4,10 +4,10 @@
 
 int main()
 {
-    unsigned char zero = 0;
-    const unsigned char *phrase = reinterpret_cast<const unsigned char *>("abc");
+    char phrase[] = "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq";
+    const unsigned char *uphrase = reinterpret_cast<const unsigned char *>(phrase);
     // std::cout << strlen(phrase) << std::endl;
-    SHA1(phrase, 3).printResultHex();
+    SHA1(uphrase, strlen(phrase)).printResultHex();
 
     // std::string word;
     // std::cout << "Ingrese la palabra por encriptar (MD5): ";

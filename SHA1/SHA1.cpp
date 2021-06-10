@@ -58,20 +58,19 @@ void SHA1::process()
 {
     // initialize digest
     uint32_t digest[5];
-    uint32_t a = 0x67452301;
-    uint32_t b = 0xefcdab89;
-    uint32_t c = 0x98badcfe;
-    uint32_t d = 0x10325476;
-    uint32_t e = 0xc3d2e1f0;
-
-    digest[0] = a;
-    digest[1] = b;
-    digest[2] = c;
-    digest[3] = d;
-    digest[4] = e;
+    digest[0] = 0x67452301;
+    digest[1] = 0xefcdab89;
+    digest[2] = 0x98badcfe;
+    digest[3] = 0x10325476;
+    digest[4] = 0xc3d2e1f0;
 
     for (size_t i = 0; i < this->blocks512.length(); i++)
     {
+        uint32_t a = digest[0];
+        uint32_t b = digest[1];
+        uint32_t c = digest[2];
+        uint32_t d = digest[3];
+        uint32_t e = digest[4];
         uint32_t words[80];
         for (size_t round = 0; round < 80; round++)
         {
